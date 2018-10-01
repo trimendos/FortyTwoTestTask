@@ -1,0 +1,34 @@
+[
+  {
+    "pk": 1,
+    "model": "hello.profile",
+    "fields": {
+      "first_name": "Roman",
+      "last_name": "Duz",
+      "contacts": "tel. +38(093)683-40-96",
+      "birthday": "1990-07-07",
+      "skype": "keni-voni-be",
+      "jabber": "_trimendos_@khavr.com",
+      "email": "trimendos@gmail.com",
+      "biography": "Have 5+ years of overall experience in IT including technical support, QA automation, etc\r\nExperience with Python, PHP, CMD, Bash Scripting, Linux, Web Development (JQuery, HTML, CSS)\r\nCurrently, I'm working as a freelancer for GlobalFreelance.ua (Python, JS, PHP)"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2018-09-28T20:45:55.238Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$12000$IRbkz5TbEFdR$3hmodfiS81BjSkh67OHFtyz9tZFInOjljgc9aZMKBE0=",
+      "email": "admin@mail.ua",
+      "date_joined": "2018-09-28T20:35:52.299Z"
+    }
+  }
+]
