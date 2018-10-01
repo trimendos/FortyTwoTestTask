@@ -13,35 +13,40 @@ Profile
     <main role="main" class="container">
         <div class="jumbotron">
             <h1>42 Coffee Cups Test Assignment</h1>
+            {% if profile %}
             <div class="row">
                 <div class="col-md-6">
                     <h2>Main Info</h2>
-                    <p><strong>Name: </strong> Roman</p>
-                    <p><strong>Last Name: </strong> Duz</p>
-                    <p><strong>Date of birth:</strong> July 7, 1990</p>
-                    <p><strong>Bio: </strong>
-                    </p>
-                            <p>
-                            1. Have 5+ years of overall experience in IT including technical support, QA automation, etc.<br>
-                            2. Experience with Python, PHP, CMD, Bash Scripting, Linux, Web Development (JQuery, HTML, CSS)<br>
-                            3. Currently I'm working as a freelancer for GlobalFreelance.ua (Python, JS, PHP)
-                            </p>
+                    <p><strong>Name: </strong> {{ profile.first_name }}</p>
+                    <p><strong>Last Name: </strong> {{ profile.last_name }}</p>
+                    <p><strong>Date of birth:</strong> {{ profile.birthday }}</p>
+                    <p><strong>Bio: </strong></p>
+                    <p>{{ profile.biography|linenumbers|linebreaks }}</p>
+
                 </div>
                 <div class="col-md-6">
                     <h2>Contacts</h2>
                     <p><strong>Email: </strong>
                         <a href="mailto:#">
-                            <i class="icon-envelope"></i>trimendos@gmail.com
+                            <i class="icon-envelope"></i>{{ profile.email }}
                         </a>
                     </p>
-                    <p><strong>Jabber: </strong>_trimendos_@khavr.com</p>
-                    <p><strong>Skype: </strong>keni-voni-be</p>
-                    <p><strong>Other contacts: </strong>
-                        <p>1. tel. +38(093)683-40-96</p>
-                    </p>
+                    <p><strong>Jabber: </strong>{{ profile.jabber }}</p>
+                    <p><strong>Skype: </strong>{{ profile.skype }}</p>
+                    <p><strong>Other contacts: </strong></p>
+                    <p>{{ profile.contacts|linenumbers|linebreaks }}</p>
+
 
                 </div>
             </div>
+            {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>The biography in db is not found.</h2>
+
+                </div>
+            </div>
+            {% endif %}
         </div>
     </main>
 
