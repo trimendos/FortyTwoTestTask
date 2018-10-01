@@ -1,7 +1,13 @@
 42cc-pystyle==0.0.16
 Django==1.6.7
+factory-boy==2.11.1
+Faker==0.9.1
 flake8==2.6.2
+ipaddress==1.0.22
 mccabe==0.5.3
 pycodestyle==2.0.0
 pyflakes==1.2.3
+python-dateutil==2.7.3
+six==1.11.0
 South==1.0.2
+text-unidecode==1.2
