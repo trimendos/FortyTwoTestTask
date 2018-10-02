@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'south',
     'apps.hello',
 )
@@ -133,3 +135,4 @@ FIXTURE_DIRS = (
 
 # Turn off south during test
 SOUTH_TESTS_MIGRATE = False
+SITE_ID = 1

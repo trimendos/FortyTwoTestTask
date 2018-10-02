@@ -9,10 +9,13 @@ from apps.hello.views import MainPageView
 admin.autodiscover()
 urlpatterns = patterns(
     '',
-    # Examples:
-    # url(r'^$', 'fortytwo_test_task.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
     url('^$', MainPageView.as_view(), name='main_page'),
     url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += staticfiles_urlpatterns()
+urlpatterns += patterns(
+    'django.contrib.flatpages.views',
+    url(r'^requests_page/$',
+        'flatpage', {'url': '/requests_page/'},
+        name='requests_page'),
+)

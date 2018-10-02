@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Requests
+{% endblock title %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+
+    <main role="main" class="container">
+            <h1>42 Coffee Cups Test Assignment</h1>
+
+            <div class="row">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">METHOD</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">STATUS CODE</th>
+                        <th scope="col">DATE & TIME</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/</td>
+                        <td>200</td>
+                        <td>02/Oct/2018 14:00:39</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/111</td>
+                        <td>404</td>
+                        <td>02/Oct/2018 14:00:39</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/main</td>
+                        <td>404</td>
+                        <td>02/Oct/2018 14:10:39</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/requests_page/</td>
+                        <td>200</td>
+                        <td>02/Oct/2018 14:11:39</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+    </main>
+
+{% endblock content %}
