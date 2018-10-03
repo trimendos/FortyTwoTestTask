@@ -15,3 +15,7 @@ class Profile(models.Model):
     def __unicode__(self):
         return u'{last_name} {first_name}'.format(first_name=self.first_name,
                                                   last_name=self.last_name)
+
+
+class Request(models.Model):
+    pass
