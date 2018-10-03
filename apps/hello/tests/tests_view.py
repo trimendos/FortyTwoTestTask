@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from json import loads
 from datetime import date
 from factory import fuzzy, DjangoModelFactory
 
@@ -69,3 +70,34 @@ class MainPageViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(contacts, None)
         self.assertContains(response, 'The biography in db is not found.')
+
+
+class RequestsPageViewTest(TestCase):
+    def setUp(self):
+        self.url = reverse('requests_page')
+        self.response = self.client.get(self.url)
+
+    def test_page_returned(self):
+        """Test requests page is returned"""
+        self.assertEqual(
+            self.response.status_code, 200, 'Page was not returned'
+        )
+        self.assertContains(self.response, 'Requests')
+        self.assertTemplateUsed(self.response, 'hello/requests_page.html')
+
+    def test_view_returns_last_10_web_requests_by_ajax(self):
+        """Returns last 10 requests on ajax request"""
+        response = self.client.get(
+            reverse('requests_page'),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+
+        requests = loads(response.content)['webrequests']
+        expected_requests = [
+            {'id': i,
+             'datetime': '03/Oct/2018 13:19:45',
+             'path': '/',
+             'status_code': 200,
+             'method': 'GET'} for i in range(1, 11)
+        ]
+        self.assertEqual(requests, expected_requests)
