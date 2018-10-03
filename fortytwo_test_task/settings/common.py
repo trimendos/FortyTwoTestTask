@@ -115,6 +115,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'apps', 'hello', 'static'),
 )
 
 

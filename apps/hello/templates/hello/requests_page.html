@@ -14,7 +14,7 @@ Requests
             <h1>42 Coffee Cups Test Assignment</h1>
 
             <div class="row">
-                <table class="table table-hover">
+                <table class="table table-hover" id="requests">
                     <thead>
                     <tr>
                         <th scope="col">METHOD</th>
@@ -55,3 +55,40 @@ Requests
     </main>
 
 {% endblock content %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/requests_page.js' %}"></script>
+    <script>
+
+        $.mockjax({
+            url: window.location.href + "?infocus=*",
+            responseText: JSON.stringify({
+                    "webrequests": [
+                        {
+                            "id": 1,
+                            "datetime": "02/Oct/2018 19:19:45",
+                            "url": "/map",
+                            "method": "GET",
+                            "status_code": 404
+                        },
+                        {
+                            "id": 2,
+                            "datetime": "02/Oct/2018 19:19:50",
+                            "url": "/info",
+                            "method": "GET",
+                            "status_code": 404
+                        },
+                        {
+                            "id": 3,
+                            "datetime": "02/Oct/2018 19:19:55",
+                            "url": "/",
+                            "method": "GET",
+                            "status_code": 200
+                        }
+                    ],
+                    "unviewed": 3
+                })
+        });
+        app.Requests.init();
+    </script>
+{% endblock %}
