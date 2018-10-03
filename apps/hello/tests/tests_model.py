@@ -44,7 +44,7 @@ class TestRequest(TestCase):
 
     def test_fields_in_model(self):
         """Test all fields are represented in the model"""
-        fields = {k.name: k.get_internal_type() for k in Request._meta_fields}
+        fields = {k.name: k.get_internal_type() for k in Request._meta.fields}
         self.assertDictEqual(fields, {
             u'id': u'AutoField',
             'datetime': u'DateTimeField',

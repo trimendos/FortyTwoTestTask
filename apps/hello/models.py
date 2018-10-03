@@ -18,4 +18,20 @@ class Profile(models.Model):
 
 
 class Request(models.Model):
-    pass
+    """Stores an instance of the http request"""
+    datetime = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=150)
+    status_code = models.IntegerField(max_length=3)
+    method = models.CharField(max_length=10)
+    viewed = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-datetime']
+
+    def __unicode__(self):
+        return u'{datetime} {url}'.format(datetime=self.datetime, url=self.url)
+
+    @staticmethod
+    def get_unviewed_count():
+        """Returns count of unviewed requests"""
+        return Request.objects.filter(viewed=False).count()
