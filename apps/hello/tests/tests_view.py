@@ -96,7 +96,7 @@ class RequestsPageViewTest(TestCase):
         expected_requests = [
             {'id': i,
              'datetime': '03/Oct/2018 13:19:45',
-             'path': '/',
+             'url': '/',
              'status_code': 200,
              'method': 'GET'} for i in range(1, 11)
         ]
