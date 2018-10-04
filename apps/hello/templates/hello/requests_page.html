@@ -24,30 +24,14 @@ Requests
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>GET</td>
-                        <td>/</td>
-                        <td>200</td>
-                        <td>02/Oct/2018 14:00:39</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/111</td>
-                        <td>404</td>
-                        <td>02/Oct/2018 14:00:39</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/main</td>
-                        <td>404</td>
-                        <td>02/Oct/2018 14:10:39</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/requests_page/</td>
-                        <td>200</td>
-                        <td>02/Oct/2018 14:11:39</td>
-                    </tr>
+                    {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.method }}</td>
+                            <td>{{ obj.url }}</td>
+                            <td>{{ obj.status_code }}</td>
+                            <td>{{ obj.datetime|date:"d/M/Y H:i:s" }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

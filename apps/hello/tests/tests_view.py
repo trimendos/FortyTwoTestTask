@@ -5,7 +5,7 @@ from factory import fuzzy, DjangoModelFactory
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from apps.hello.models import Profile
+from apps.hello.models import Profile, Request
 
 
 class ProfileFactory(DjangoModelFactory):
@@ -13,6 +13,13 @@ class ProfileFactory(DjangoModelFactory):
 
     class Meta:
         model = Profile
+
+
+class RequestFactory(DjangoModelFactory):
+    datetime = fuzzy.FuzzyDate(date.today())
+
+    class Meta:
+        model = Request
 
 
 class MainPageViewTest(TestCase):
@@ -87,17 +94,39 @@ class RequestsPageViewTest(TestCase):
 
     def test_view_returns_last_10_web_requests_by_ajax(self):
         """Returns last 10 requests on ajax request"""
+        Request.objects.all().delete()
+        for _ in range(10):
+            RequestFactory.create(status_code=200)
         response = self.client.get(
             reverse('requests_page'),
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
 
         requests = loads(response.content)['webrequests']
-        expected_requests = [
-            {'id': i,
-             'datetime': '03/Oct/2018 13:19:45',
-             'url': '/',
-             'status_code': 200,
-             'method': 'GET'} for i in range(1, 11)
-        ]
-        self.assertEqual(requests, expected_requests)
+        # Last request
+        self.assertEqual(requests[0]['id'], 10)
+
+        # Oldest request
+        self.assertEqual(requests[9]['id'], 1)
+
+    def test_mark_all_requests_as_viewed(self):
+        """If requested is requests_page and request is ajax and page is in
+        focus, mark all requests in the db as viewed"""
+        self.client.get('/')
+        self.client.get('/some_page')
+        self.client.get(
+            '/requests_page/?infocus=true',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertTrue(all(r.viewed for r in Request.objects.all()))
+
+    def test_non_mark_requests(self):
+        """If requested is requests_page and request is ajax and page is not in
+        focus, non mark all requests in the db as viewed"""
+        self.client.get('/')
+        self.client.get('/some_page')
+        self.client.get(
+            '/requests_page/?infocus=false',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        self.assertFalse(all(r.viewed for r in Request.objects.all()))
