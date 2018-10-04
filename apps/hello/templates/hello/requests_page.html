@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Requests
+{% endblock title %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+
+    <main role="main" class="container">
+            <h1>42 Coffee Cups Test Assignment</h1>
+
+            <div class="row">
+                <table class="table table-hover" id="requests">
+                    <thead>
+                    <tr>
+                        <th scope="col">METHOD</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">STATUS CODE</th>
+                        <th scope="col">DATE & TIME</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for obj in object_list %}
+                        <tr>
+                            <td>{{ obj.method }}</td>
+                            <td>{{ obj.url }}</td>
+                            <td>{{ obj.status_code }}</td>
+                            <td>{{ obj.datetime|date:"d/M/Y H:i:s" }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+    </main>
+
+{% endblock content %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/requests_page.js' %}"></script>
+    <script>
+        app.Requests.init();
+    </script>
+{% endblock %}

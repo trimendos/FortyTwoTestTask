@@ -15,3 +15,23 @@ class Profile(models.Model):
     def __unicode__(self):
         return u'{last_name} {first_name}'.format(first_name=self.first_name,
                                                   last_name=self.last_name)
+
+
+class Request(models.Model):
+    """Stores an instance of the http request"""
+    datetime = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=150)
+    status_code = models.IntegerField(max_length=3)
+    method = models.CharField(max_length=10)
+    viewed = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-datetime']
+
+    def __unicode__(self):
+        return u'{datetime} {url}'.format(datetime=self.datetime, url=self.url)
+
+    @staticmethod
+    def get_unviewed_count():
+        """Returns count of unviewed requests"""
+        return Request.objects.filter(viewed=False).count()
