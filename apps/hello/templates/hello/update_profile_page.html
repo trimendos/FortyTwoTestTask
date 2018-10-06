@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-Profile Update
+Update Profile
 {% endblock title %}
 
 {% block extra_head %}
@@ -42,7 +42,7 @@ Profile Update
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
                                 <label for="birthday">Date of birth:</label>
-                                <input type="text" class="form-control" id="birthday" required>
+                                <input type="text" class="form-control" id="birthday" autocomplete="off" required>
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
@@ -120,6 +120,11 @@ Profile Update
 
             </form>
     </main>
+
+{% endblock content %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/update_profile_page.js' %}"></script>
     <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -140,5 +145,4 @@ Profile Update
       }, false);
     })();
     </script>
-
-{% endblock content %}
+{% endblock %}
