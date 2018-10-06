@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Profile Update
+{% endblock title %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+
+    <main role="main" class="container">
+            <h1>42 Coffee Cups Test Assignment</h1>
+
+            <form class="needs-validation mb-4"
+                  id="profile" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="card">
+                    <div class="card-header">
+                        Update User Profile:
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="first_name">First Name:</label>
+                                <input type="text" class="form-control" id="first_name" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="last_name">Last Name:</label>
+                                <input type="text" class="form-control" id="last_name" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="birthday">Date of birth:</label>
+                                <input type="text" class="form-control" id="birthday" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="email">Email:</label>
+                                <input type="text" class="form-control" id="email" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="jabber">Jabber:</label>
+                                <input type="text" class="form-control" id="jabber" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="skype">Skype:</label>
+                                <input type="text" class="form-control" id="skype" required>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="bio">Biography:</label>
+                                <textarea cols="40" rows="10" id="bio" class="form-control" ></textarea>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="other_contacts">Other Contacts:</label>
+                                <textarea cols="40" rows="10" id="other_contacts" class="form-control" ></textarea>
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-4">
+                                <label>Link to Photo</label>
+                                <input type="file" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label>Photo</label><br>
+
+                                <img width="200" height="200">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer clearfix">
+                        <span id="back_link">
+                        <a class="btn btn-primary" href="{% url 'main_page' %}">
+                            <span class="glyphicon glyphicon-arrow-left">
+                                Back
+                            </span>
+                        </a>
+                        </span>
+                        <button class="btn btn-primary" id="save">
+                            <span class="glyphicon glyphicon-floppy-disk">Submit</span>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+    </main>
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
+
+{% endblock content %}

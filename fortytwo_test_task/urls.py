@@ -14,3 +14,10 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += staticfiles_urlpatterns()
+
+urlpatterns += patterns(
+    'django.contrib.flatpages.views',
+    url(r'^update_profile_page/$',
+        'flatpage', {'url': '/update_profile_page/'},
+        name='update_profile_page'),
+)
