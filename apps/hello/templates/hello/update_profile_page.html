@@ -11,7 +11,9 @@ Update Profile
 {% block content %}
 
     <main role="main" class="container">
-            <h1>42 Coffee Cups Test Assignment</h1>
+        <div id="loading"></div>
+
+        <h1>42 Coffee Cups Test Assignment</h1>
 
             <form class="needs-validation mb-4"
                   id="profile" method="POST" enctype="multipart/form-data" novalidate>
@@ -94,15 +96,15 @@ Update Profile
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-4">
-                                <label>Link to Photo</label>
-                                <input type="file" class="form-control" >
+                                <label for="photo">Link to Photo</label>
+                                <input id="photo" type="file" class="form-control" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
                                 <label>Photo</label><br>
 
-                                <img width="200" height="200">
+                                <img class="picture" src="{% static "img/unknown_user.png" %}">
 
                             </div>
 
@@ -111,7 +113,7 @@ Update Profile
                     </div>
                     <div class="card-footer clearfix">
                         <span id="back_link">
-                        <a class="btn btn-primary" href="{% url 'main_page' %}">
+                        <a id="home-link" class="btn btn-primary" href="{% url 'main_page' %}">
                             <span class="glyphicon glyphicon-arrow-left">
                                 Back
                             </span>
