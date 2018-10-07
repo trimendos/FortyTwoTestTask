@@ -5,7 +5,11 @@ from factory import fuzzy, DjangoModelFactory
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User, AnonymousUser
+
 from apps.hello.models import Profile, Request
+from ..forms import ProfileUpdateForm
+from ..views import ProfileUpdatePageView
 
 
 class ProfileFactory(DjangoModelFactory):
@@ -130,3 +134,58 @@ class RequestsPageViewTest(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
         self.assertFalse(all(r.viewed for r in Request.objects.all()))
+
+
+class TestProfileUpdateView(TestCase):
+
+    def setUp(self):
+        self.pk = 1
+        self.rf = RequestFactory()
+        self.url = reverse('update_profile_page', kwargs={'pk': self.pk})
+        self.request = self.rf.get(self.url)
+        self.user = User.objects.first()
+        self.request.user = self.user
+        self.response = ProfileUpdatePageView.as_view()(
+            self.request, pk=self.pk)
+
+    def test_get_update_page_with_authorization(self):
+        """Test should return template update_profile_page.html"""
+        self.assertEqual(self.response.status_code, 200)
+        self.assertEqual(self.response.template_name,
+                         ['update_profile_page.html'])
+
+    def test_get_update_page_with_anonymous(self):
+        """Test view should redirect on the login page"""
+        request = self.rf.get(self.url)
+        request.user = AnonymousUser()
+        response = ProfileUpdatePageView.as_view()(request, pk=1)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url,
+                         '/accounts/login/?next=/update_profile_page/1/')
+
+    def test_view_return_form_with_image_field(self):
+        """Field 'photo' should be in the form"""
+        self.assertIsInstance(
+            self.response.context_data['form'], ProfileUpdateForm)
+        self.assertIn('photo', self.response.context_data['form'].fields)
+
+    def test_get_update_page_without_pk(self):
+        """Request "update_profile_page" without arg 'pk'. Return 404."""
+        response = self.client.get('/update_profile_page/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_update_page_with_wrong_pk(self):
+        """Request "update_profile_page" with pk=0. Return 404."""
+        self.client.login(**{'username': 'admin',
+                             'password': 'admin'})
+        response = self.client.get('/update_profile_page/0/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_fields_presented(self):
+        """Test all fields are presented on the page"""
+        fields = [i.name for i in Profile._meta.fields if i.name != 'id']
+        error_message = 'field "{}" is not found on the page'
+        for field in fields:
+            self.assertIn(
+                'id="id_{0}"'.format(field),
+                self.response.rendered_content, error_message.format(field))

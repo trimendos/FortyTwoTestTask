@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView
 from django.http import HttpResponse
 
 from apps.hello.models import Profile, Request
@@ -33,3 +33,7 @@ class RequestsPageView(ListView):
                                 content_type="application/json")
 
         return super(RequestsPageView, self).get(request, *args, **kwargs)
+
+
+class ProfileUpdatePageView(UpdateView):
+    pass
