@@ -56,11 +56,19 @@ class ProfileUpdateFormTest(TestCase):
         """The input data are the boundary values of the age."""
         too_old = ProfileFactory.build(id=1,
                                        birthday=date(1777, 1, 1)).__dict__
-        self.assertFalse(self.form(data=too_old).is_valid())
+        self.assertFalse(
+            self.form(data=too_old).is_valid(),
+            "The age is too old")
 
         too_young = ProfileFactory.build(id=1,
                                          birthday=date.today()).__dict__
-        self.assertFalse(self.form(data=too_young).is_valid())
+        self.assertFalse(
+            self.form(data=too_young).is_valid(),
+            "The age is too young"
+        )
 
         normal = ProfileFactory.build(id=1).__dict__
-        self.assertTrue(self.form(data=normal).is_valid())
+        self.assertTrue(
+            self.form(data=normal).is_valid(),
+            "The date is incorrect"
+        )
