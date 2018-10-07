@@ -1,6 +1,7 @@
 import decimal
 import datetime
 from json import dumps
+from dateutil.relativedelta import relativedelta
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
@@ -29,3 +30,9 @@ def json_response(response):
     return HttpResponse(
         dumps(response, cls=DjangoOverRideJSONEncoder),
         content_type="application/json")
+
+
+def years_ago(years, from_date=None):
+    if from_date is None:
+        from_date = datetime.date.today()
+    return datetime.date.today() - (from_date - relativedelta(years=years))
