@@ -1,3 +1,5 @@
+from PIL import Image
+
 from django.db import models
 
 
@@ -11,6 +13,17 @@ class Profile(models.Model):
     skype = models.CharField(max_length=50)
     biography = models.TextField(blank=True)
     contacts = models.TextField(blank=True)
+    photo = models.ImageField(
+        upload_to='photos', null=True, blank=True, verbose_name=u'Photo')
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+        size = (200, 200)
+        if self.photo and (self.photo.width > 200 or self.photo.height > 200):
+            filename = self.photo.path
+            image = Image.open(filename)
+            image.thumbnail(size, Image.ANTIALIAS)
+            image.save(filename)
 
     def __unicode__(self):
         return u'{last_name} {first_name}'.format(first_name=self.first_name,

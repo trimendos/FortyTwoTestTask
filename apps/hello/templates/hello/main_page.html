@@ -14,6 +14,17 @@ Profile
         <div class="jumbotron">
             <h1>42 Coffee Cups Test Assignment</h1>
             {% if profile %}
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    {% if profile.photo %}
+                        <img src="{{ profile.photo.url }}"/>
+                    {% else %}
+                        <img src="{% static 'img/unknown_user.png' %}">
+                    {% endif %}
+                </div>
+
+            </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <h2>Main Info</h2>
@@ -22,7 +33,6 @@ Profile
                     <p><strong>Date of birth:</strong> {{ profile.birthday }}</p>
                     <p><strong>Bio: </strong></p>
                     <p>{{ profile.biography|linenumbers|linebreaks }}</p>
-
                 </div>
                 <div class="col-md-6">
                     <h2>Contacts</h2>
@@ -35,10 +45,9 @@ Profile
                     <p><strong>Skype: </strong>{{ profile.skype }}</p>
                     <p><strong>Other contacts: </strong></p>
                     <p>{{ profile.contacts|linenumbers|linebreaks }}</p>
-
-
                 </div>
             </div>
+
             {% else %}
             <div class="row">
                 <div class="col-md-12">

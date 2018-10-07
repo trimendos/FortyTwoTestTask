@@ -45,7 +45,7 @@ class TestProfile(TestCase):
                         'jabber': u'CharField',
                         'email': u'CharField',
                         'skype': u'CharField',
-                        'photo': u'ImageField'
+                        'photo': u'FileField'
         })
 
 
