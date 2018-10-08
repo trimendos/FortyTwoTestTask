@@ -26,10 +26,10 @@ class DjangoOverRideJSONEncoder(DjangoJSONEncoder):
         return super(DjangoOverRideJSONEncoder, self).default(o)
 
 
-def json_response(response):
+def json_response(response, **response_kwargs):
     return HttpResponse(
         dumps(response, cls=DjangoOverRideJSONEncoder),
-        content_type="application/json")
+        content_type="application/json", **response_kwargs)
 
 
 def years_ago(years, from_date=None):

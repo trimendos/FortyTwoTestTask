@@ -6,9 +6,6 @@ from django import forms
 from .models import Profile
 
 
-BOOTS_ATTRS = {'class': 'form-control'}
-
-
 def validate_birthday(value):
     today = date.today()
     max_age = today.year - date(1940, 1, 1).year
@@ -23,22 +20,46 @@ def validate_birthday(value):
 
 class ProfileUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
-        widget=forms.widgets.TextInput(attrs=BOOTS_ATTRS))
+        widget=forms.widgets.TextInput(attrs={
+            'class': 'form-control', 'data-minlength': 3, 'required': True}))
     last_name = forms.CharField(
-        widget=forms.widgets.TextInput(attrs=BOOTS_ATTRS))
+        widget=forms.widgets.TextInput(attrs={
+            'class': 'form-control', 'data-minlength': 3, 'required': True}))
     birthday = forms.DateField(
         validators=[validate_birthday],
-        input_formats=['%B %d, %Y'])
+        widget=forms.DateInput(
+            format='%d/%m/%Y',
+            attrs={
+                'class': 'form-control',
+                'data-minlength': 3,
+                'required': True,
+                'data-birthday': 'birthday',
+                'autocomplete': 'off',
+                'pattern': '\d{1,2}/\d{1,2}/\d{4}'}
+        ), input_formats=['%d/%m/%Y'])
     email = forms.EmailField(
-        widget=forms.widgets.EmailInput(attrs=BOOTS_ATTRS))
+        widget=forms.widgets.EmailInput(attrs={
+            'class': 'form-control', 'data-minlength': 3, 'required': True}))
     jabber = forms.CharField(
-        widget=forms.widgets.TextInput(attrs=BOOTS_ATTRS))
+        widget=forms.widgets.TextInput(attrs={
+            'class': 'form-control', 'data-minlength': 3, 'required': True}))
     skype = forms.CharField(
-        widget=forms.widgets.TextInput(attrs=BOOTS_ATTRS))
+        widget=forms.widgets.TextInput(attrs={
+            'class': 'form-control', 'data-minlength': 3, 'required': True}))
     biography = forms.CharField(
-        widget=forms.widgets.Textarea(attrs=BOOTS_ATTRS), required=False),
+        widget=forms.widgets.Textarea(
+            attrs={
+                'class': 'form-control',
+                'cols': 40,
+                'rows': 10
+            }), required=False)
     contacts = forms.CharField(
-        widget=forms.widgets.Textarea(attrs=BOOTS_ATTRS), required=False)
+        widget=forms.widgets.Textarea(
+            attrs={
+                'class': 'form-control',
+                'cols': 40,
+                'rows': 10
+            }), required=False)
 
     class Meta:
         model = Profile

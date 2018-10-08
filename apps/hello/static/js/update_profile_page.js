@@ -10,7 +10,7 @@ $(function () {
 
     });
 
-    $("#birthday").datepicker({
+    $("#id_birthday").datepicker({
         changeMonth: true,
         changeYear: true,
         dateFormat: "dd/mm/yy",
@@ -18,7 +18,7 @@ $(function () {
         yearRange : '1940:c'
     });
 
-    $("#photo").on("change", function () {
+    $("#id_photo").on("change", function () {
         var input = this;
 
         if (input.files && input.files[0]) {
@@ -58,9 +58,9 @@ $(function () {
         }, 3000);
     }
 
-    $("#save").on("click", function () {
+/*    $("#save").on("click", function () {
         simulateDataProcess();
         return false;
-    });
+    });*/
 
 });

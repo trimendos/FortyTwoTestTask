@@ -3,7 +3,7 @@ from json import loads
 from datetime import date
 from factory import fuzzy, DjangoModelFactory
 
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, AnonymousUser
 
@@ -19,7 +19,7 @@ class ProfileFactory(DjangoModelFactory):
         model = Profile
 
 
-class RequestFactory(DjangoModelFactory):
+class RequestModelFactory(DjangoModelFactory):
     datetime = fuzzy.FuzzyDate(date.today())
 
     class Meta:
@@ -100,7 +100,7 @@ class RequestsPageViewTest(TestCase):
         """Returns last 10 requests on ajax request"""
         Request.objects.all().delete()
         for _ in range(10):
-            RequestFactory.create(status_code=200)
+            RequestModelFactory.create(status_code=200)
         response = self.client.get(
             reverse('requests_page'),
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
@@ -152,7 +152,7 @@ class TestProfileUpdateView(TestCase):
         """Test should return template update_profile_page.html"""
         self.assertEqual(self.response.status_code, 200)
         self.assertEqual(self.response.template_name,
-                         ['update_profile_page.html'])
+                         ['hello/update_profile_page.html'])
 
     def test_get_update_page_with_anonymous(self):
         """Test view should redirect on the login page"""

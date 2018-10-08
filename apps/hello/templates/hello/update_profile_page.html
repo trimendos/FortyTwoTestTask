@@ -27,36 +27,15 @@ Update Profile
 
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
-                                <label for="first_name">First Name:</label>
-                                <input type="text" class="form-control" id="first_name" required>
+                                <label for="id_first_name">First Name:</label>
+                                {{ form.first_name }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label for="last_name">Last Name:</label>
-                                <input type="text" class="form-control" id="last_name" required>
-                                <div class="invalid-tooltip">
-                                    This field is required.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 mb-4">
-                                <label for="birthday">Date of birth:</label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="birthday"
-                                       autocomplete="off"
-                                       pattern="\d{1,2}/\d{1,2}/\d{4}"
-                                       required>
-                                <div class="invalid-tooltip">
-                                    This field is required.
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="email">Email:</label>
-                                <input type="text" class="form-control" id="email" required>
+                                <label for="id_last_name">Last Name:</label>
+                                {{ form.last_name }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
@@ -64,15 +43,15 @@ Update Profile
                         </div>
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
-                                <label for="jabber">Jabber:</label>
-                                <input type="text" class="form-control" id="jabber" required>
+                                <label for="id_birthday">Date of birth:</label>
+                                {{ form.birthday }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label for="skype">Skype:</label>
-                                <input type="text" class="form-control" id="skype" required>
+                                <label for="id_email">Email:</label>
+                                {{ form.email }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
@@ -80,15 +59,31 @@ Update Profile
                         </div>
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
-                                <label for="bio">Biography:</label>
-                                <textarea cols="40" rows="10" id="bio" class="form-control" ></textarea>
+                                <label for="id_jabber">Jabber:</label>
+                                {{ form.jabber }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label for="other_contacts">Other Contacts:</label>
-                                <textarea cols="40" rows="10" id="other_contacts" class="form-control" ></textarea>
+                                <label for="id_skype">Skype:</label>
+                                {{ form.skype }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="id_biography">Biography:</label>
+                                {{ form.biography }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="id_contacts">Other Contacts:</label>
+                                {{ form.contacts }}
                                 <div class="invalid-tooltip">
                                     This field is required.
                                 </div>
@@ -96,15 +91,22 @@ Update Profile
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-4">
-                                <label for="photo">Link to Photo</label>
-                                <input id="photo" type="file" class="form-control" >
+                                <label for="id_photo">Link to Photo</label>
+                                <input id="id_photo" type="file" class="form-control" >
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-6 mb-4">
-                                <label>Photo</label><br>
+                                {% if photo_exists %}
+                                    <input id="id_photo-clear"
+                                           name="photo-clear" type="checkbox" />
+                                    <label for="id_photo-clear">Clear</label><br>
+                                    <img class="picture" src="{{ MEDIA_URL }}{{ form.photo.value }}">
+                                {% else %}
+                                    <label>Photo</label><br>
+                                    <img class="picture" src="{% static "img/unknown_user.png" %}">
+                                {% endif %}
 
-                                <img class="picture" src="{% static "img/unknown_user.png" %}">
 
                             </div>
 
