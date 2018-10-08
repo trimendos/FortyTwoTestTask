@@ -147,6 +147,9 @@ class TestProfileUpdateView(TestCase):
         self.request.user = self.user
         self.response = ProfileUpdatePageView.as_view()(
             self.request, pk=self.pk)
+        self.kwargs = {'HTTP_X_REQUESTED_WITH': "XMLHttpRequest"}
+        self.credentials = {'username': 'admin',
+                            'password': 'admin'}
 
     def test_get_update_page_with_authorization(self):
         """Test should return template update_profile_page.html"""
@@ -176,8 +179,7 @@ class TestProfileUpdateView(TestCase):
 
     def test_get_update_page_with_wrong_pk(self):
         """Request "update_profile_page" with pk=0. Return 404."""
-        self.client.login(**{'username': 'admin',
-                             'password': 'admin'})
+        self.client.login(**self.credentials)
         response = self.client.get('/update_profile_page/0/')
         self.assertEqual(response.status_code, 404)
 
@@ -189,3 +191,40 @@ class TestProfileUpdateView(TestCase):
             self.assertIn(
                 'id="id_{0}"'.format(field),
                 self.response.rendered_content, error_message.format(field))
+
+    def test_ajax_invalid_post(self):
+        """Profile should not be updated"""
+        fields = [k for k, v in ProfileUpdateForm.base_fields.iteritems()
+                  if v.required]
+        data = dict.fromkeys(fields, u"")
+        self.client.login(**self.credentials)
+        response = self.client.post(self.url, data, **self.kwargs)
+        ERROR_MESSAGE = 'This field is required.'
+        self.assertContains(response, ERROR_MESSAGE, 6, 400)
+        profile = Profile.objects.first()
+        for field in fields:
+            self.assertNotEqual(profile.serializable_value(field),
+                                data[field])
+
+    def test_ajax_valid_post(self):
+        """Profile should be updated"""
+        self.client.login(**self.credentials)
+        data = {'first_name': 'Linus',
+                'last_name': 'Torvalds',
+                'birthday': '28/12/1969',
+                'email': 'l.torvalds@test.com',
+                'skype': 'l.torvalds',
+                'jabber': 'l.torvalds@test.com',
+                'contacts': 'exist',
+                'biography': 'Torvalds was born in Helsinki, Finland.'}
+        response = self.client.post(self.url, data, **self.kwargs)
+        self.assertEqual(response.status_code, 200)
+        profile = Profile.objects.first()
+        self.assertEqual(profile.first_name, data['first_name'])
+        self.assertEqual(profile.last_name, data['last_name'])
+        self.assertEqual(
+            profile.birthday.strftime('%d/%m/%Y'), data['birthday'])
+        self.assertEqual(profile.email, data['email'])
+        self.assertEqual(profile.jabber, data['jabber'])
+        self.assertEqual(profile.contacts, data['contacts'])
+        self.assertEqual(profile.biography, data['biography'])
