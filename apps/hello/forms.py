@@ -39,10 +39,24 @@ class ProfileUpdateForm(forms.ModelForm):
         ), input_formats=['%d/%m/%Y'])
     email = forms.EmailField(
         widget=forms.widgets.EmailInput(attrs={
-            'class': 'form-control', 'data-minlength': 3, 'required': True}))
+            'class': 'form-control',
+            'data-minlength': 3,
+            'required': True,
+            'pattern': '^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]'
+                       '{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$',
+            'data-required-error': 'This field is required.',
+            'data-pattern-error': 'Enter a valid email address.'
+        }))
     jabber = forms.CharField(
         widget=forms.widgets.TextInput(attrs={
-            'class': 'form-control', 'data-minlength': 3, 'required': True}))
+            'class': 'form-control',
+            'data-minlength': 3,
+            'required': True,
+            'pattern': '^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]'
+                       '{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$',
+            'data-required-error': 'This field is required.',
+            'data-pattern-error': 'Enter a valid email address.'
+        }))
     skype = forms.CharField(
         widget=forms.widgets.TextInput(attrs={
             'class': 'form-control', 'data-minlength': 3, 'required': True}))
