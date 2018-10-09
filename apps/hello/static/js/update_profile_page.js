@@ -2,14 +2,6 @@ $(function () {
     "use strict";
     let ajaxOpt;
 
-    $("#id_birthday").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: "dd/mm/yy",
-        maxDate: '-16Y',
-        yearRange : '1940:c'
-    });
-
     $("#id_photo").on("change", function () {
         let input = this;
 

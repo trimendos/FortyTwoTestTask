@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 
 from .models import Profile
+from .widgets import DatePickerWidget
 
 
 def validate_birthday(value):
@@ -27,16 +28,17 @@ class ProfileUpdateForm(forms.ModelForm):
             'class': 'form-control', 'data-minlength': 3, 'required': True}))
     birthday = forms.DateField(
         validators=[validate_birthday],
-        widget=forms.DateInput(
-            format='%d/%m/%Y',
+        widget=DatePickerWidget(
+            format="%d/%m/%Y",
             attrs={
-                'class': 'form-control',
-                'data-minlength': 3,
-                'required': True,
-                'data-birthday': 'birthday',
-                'autocomplete': 'off',
-                'pattern': '\d{1,2}/\d{1,2}/\d{4}'}
-        ), input_formats=['%d/%m/%Y'])
+                    'class': 'form-control',
+                    'data-minlength': 3,
+                    'required': True,
+                    'data-birthday': 'birthday',
+                    'autocomplete': 'off',
+                    'pattern': '\d{1,2}/\d{1,2}/\d{4}'
+            }
+        ), input_formats=["%d/%m/%Y"])
     email = forms.EmailField(
         widget=forms.widgets.EmailInput(attrs={
             'class': 'form-control',
