@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load custom_tags %}
 {% block title %}
 Profile
 {% endblock title %}
@@ -47,6 +47,8 @@ Profile
                     <p>{{ profile.contacts|linenumbers|linebreaks }}</p>
                 </div>
             </div>
+            <hr width="98%"><br>
+            <a class="btn btn-info" href="{% edit_link profile %}">Edit(Admin)</a>
 
             {% else %}
             <div class="row">
