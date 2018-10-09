@@ -51,4 +51,10 @@ class Request(models.Model):
 
 
 class CRUDLog(models.Model):
-    pass
+    action = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    app = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return '{0.timestamp}: {0.action} {0.model} from {0.app}'.format(self)
