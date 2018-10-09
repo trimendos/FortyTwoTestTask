@@ -11,7 +11,7 @@ class ShowModelsTest(TestCase):
         self.models = get_models()
 
     def test_returning_stderr(self):
-        """Output in format: Error: <model_name> - objects <objects>.count()"""
+        """Output in format: Error: <model_name> - <objects>.count()"""
         call_command('showmodels', stderr=self.out)
         for model in self.models:
             message = 'Error: {} - {}'.format(model.__name__,
@@ -21,7 +21,7 @@ class ShowModelsTest(TestCase):
                 self.out.getvalue())
 
     def test_returning_stdout(self):
-        """Output in format: <model_name> - objects <objects>.count()"""
+        """Output in format: <model_name> - <objects>.count()"""
         call_command('showmodels', stdout=self.out)
         for model in self.models:
             message = '{} - {}'.format(model.__name__, model.objects.count())
