@@ -8,7 +8,7 @@ def create_object(action, instance, sender):
     if sender == CRUDLog:
         return
     try:
-        CRUDLog.objects.create(
+        return CRUDLog.objects.create(
             action=action,
             model=instance._meta.object_name,
             app=instance._meta.app_label
