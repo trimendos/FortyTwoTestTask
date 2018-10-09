@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Update Profile
+{% endblock title %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+
+    <main role="main" class="container">
+        <div id="loading"></div>
+
+        <h1>42 Coffee Cups Test Assignment</h1>
+
+            <form class="needs-validation mb-4"
+                  id="profile" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="card">
+                    <div class="card-header">
+                        Update User Profile:
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="id_first_name">First Name:</label>
+                                {{ form.first_name }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="id_last_name">Last Name:</label>
+                                {{ form.last_name }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="id_birthday">Date of birth:</label>
+                                {{ form.birthday }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="id_email">Email:</label>
+                                {{ form.email }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="id_jabber">Jabber:</label>
+                                {{ form.jabber }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="id_skype">Skype:</label>
+                                {{ form.skype }}
+                                <div class="invalid-tooltip">
+                                    This field is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                <label for="id_biography">Biography:</label>
+                                {{ form.biography }}
+                                <div class="invalid-tooltip">
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="id_contacts">Other Contacts:</label>
+                                {{ form.contacts }}
+                                <div class="invalid-tooltip">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-4">
+                                <label for="id_photo">Link to Photo</label>
+                                <input id="id_photo" name="photo" type="file" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-4">
+                                {% if photo_exists %}
+                                    <input id="id_photo-clear"
+                                           name="photo-clear" type="checkbox" />
+                                    <label for="id_photo-clear">Clear</label><br>
+                                    <img class="picture" src="{{ MEDIA_URL }}{{ form.photo.value }}">
+                                {% else %}
+                                    <label>Photo</label><br>
+                                    <img class="picture" src="{% static "img/unknown_user.png" %}">
+                                {% endif %}
+
+
+                            </div>
+
+                        </div>
+                        <div class="alert" id="output1">
+
+                        </div>
+                    </div>
+                    <div class="card-footer clearfix">
+                        <span id="back_link">
+                        <a id="home-link" class="btn btn-primary" href="{% url 'main_page' %}">
+                            <span class="glyphicon glyphicon-arrow-left">
+                                Back
+                            </span>
+                        </a>
+                        </span>
+                        <button class="btn btn-primary" id="save">
+                            <span class="glyphicon glyphicon-floppy-disk">Submit</span>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+    </main>
+
+{% endblock content %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
+    <script src="{% static 'js/update_profile_page.js' %}"></script>
+    {{ form.media }}
+{% endblock %}
