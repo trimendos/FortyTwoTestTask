@@ -92,7 +92,7 @@ Update Profile
                         <div class="form-row">
                             <div class="col-md-12 mb-4">
                                 <label for="id_photo">Link to Photo</label>
-                                <input id="id_photo" type="file" class="form-control" >
+                                <input id="id_photo" name="photo" type="file" class="form-control" >
                             </div>
                         </div>
                         <div class="form-row">
@@ -111,7 +111,9 @@ Update Profile
                             </div>
 
                         </div>
+                        <div class="alert" id="output1">
 
+                        </div>
                     </div>
                     <div class="card-footer clearfix">
                         <span id="back_link">
@@ -133,5 +135,6 @@ Update Profile
 {% endblock content %}
 {% block scripts %}
     {{ block.super }}
+    <script src="{% static 'js/jquery.form.min.js' %}"></script>
     <script src="{% static 'js/update_profile_page.js' %}"></script>
 {% endblock %}

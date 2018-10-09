@@ -1,6 +1,7 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
 
 from apps.hello.views import MainPageView, RequestsPageView, \
     ProfileUpdatePageView
@@ -19,3 +20,7 @@ urlpatterns = patterns(
         'django.contrib.auth.urls', namespace='accounts')),
 )
 urlpatterns += staticfiles_urlpatterns()
+urlpatterns += patterns('',
+                        url(r'^uploads/(?P<path>.*)$',
+                            'django.views.static.serve',
+                            {'document_root': settings.MEDIA_ROOT}))
