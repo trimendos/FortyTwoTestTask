@@ -48,3 +48,7 @@ class Request(models.Model):
     def get_unviewed_count():
         """Returns count of unviewed requests"""
         return Request.objects.filter(viewed=False).count()
+
+
+class CRUDLog(models.Model):
+    pass
