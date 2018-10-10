@@ -92,7 +92,7 @@ app.Requests = function() {
                     "url": webrequest.url,
                     "status_code": webrequest.status_code,
                     "method": webrequest.method,
-                    "priority": 0
+                    "priority": webrequest.priority
                 });
             });
         }
@@ -150,7 +150,7 @@ app.Requests = function() {
 
         data = {
             priority: input.val(),
-            req_id: parent.attr("data-id")
+            re_id: parent.attr("data-id")
         };
 
         $.ajax({

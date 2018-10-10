@@ -1,12 +1,12 @@
 from os import path
 
-from django.views.generic import TemplateView, ListView, UpdateView
+from django.views.generic import TemplateView, ListView, UpdateView, FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
 
 from .models import Profile, Request
-from .forms import ProfileUpdateForm
+from .forms import ProfileUpdateForm, PriorityChangeForm
 from .utils import json_response
 
 
@@ -19,24 +19,39 @@ class MainPageView(TemplateView):
         return context
 
 
-class RequestsPageView(ListView):
+class RequestsPageView(ListView, FormView):
     template_name = 'hello/requests_page.html'
     model = Request
-    queryset = Request.objects.values()[:10]
+    form_class = PriorityChangeForm
+
+    def get_queryset(self):
+        return self.model.objects.order_by('-priority').values()[:10]
 
     def get(self, request, *args, **kwargs):
+        raw_requests = Request.objects.values().order_by("-priority")[:10]
         if request.is_ajax():
-            if request.GET.get('infocus') == 'true':
-                Request.objects.filter(viewed=False).update(viewed=True)
+            unviewed = self.model.get_unviewed_count()
+            response = {'unviewed': unviewed}
 
-            raw_requests = Request.objects.values()[:10]
-            response = {
-                'unviewed': self.model.get_unviewed_count(),
-                'webrequests': list(raw_requests)
-            }
+            if unviewed:
+                response['webrequests'] = list(raw_requests)
+
             return json_response(response)
 
         return super(RequestsPageView, self).get(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        return json_response({'errors': form.errors})
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+
+        Request.update_priority(
+            id=cd['rq_id'], priority=cd['priority']
+        )
+        return json_response({
+            'webrequests': list(self.get_queryset()),
+        })
 
 
 class ProfileUpdatePageView(UpdateView):

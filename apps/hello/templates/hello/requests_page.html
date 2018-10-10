@@ -32,7 +32,9 @@ Requests
                             <td>{{ obj.status_code }}</td>
                             <td>{{ obj.datetime|date:"d/M/Y H:i:s" }}</td>
                             <td data-id="{{ obj.id }}">
-                                <button class="btn btn-light priority"> 0 </button>
+                                <button class="btn btn-light priority">
+                                    {{ obj.priority }}
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
