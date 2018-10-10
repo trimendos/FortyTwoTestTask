@@ -37,6 +37,7 @@ class Request(models.Model):
     status_code = models.IntegerField(max_length=3)
     method = models.CharField(max_length=10)
     viewed = models.BooleanField(default=False)
+    priority = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-datetime']
