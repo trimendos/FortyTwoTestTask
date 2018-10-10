@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from json import loads
-from datetime import date
+from datetime import date, datetime
 from factory import fuzzy, DjangoModelFactory
 
 from django.test import TestCase, RequestFactory
@@ -84,12 +84,16 @@ class MainPageViewTest(TestCase):
 
 
 class RequestsPageViewTest(TestCase):
+    fixtures = ['webrequests']
+
     def setUp(self):
         self.url = reverse('requests_page')
         self.response = self.client.get(self.url)
 
     def test_page_returned(self):
         """Test requests page is returned"""
+        self.url = reverse('requests_page')
+        self.response = self.client.get(self.url)
         self.assertEqual(
             self.response.status_code, 200, 'Page was not returned'
         )
@@ -109,7 +113,7 @@ class RequestsPageViewTest(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
         webrequests = loads(response.content)['webrequests']
-        rq_list = Request.objects.all().order_by('priority')
+        rq_list = Request.objects.all().order_by('-priority')
         self.assertEqual(webrequests[0]['id'], rq_list.first().id)
 
     def test_change_priority_async_non_valid(self):
@@ -126,6 +130,58 @@ class RequestsPageViewTest(TestCase):
         )
         content = loads(response.content)
         self.assertTrue(content.get('errors', False))
+
+    def test_10_requests_sorting_by_newest_datetime_ajax_request(self):
+        """View returns web requests from newest one. Request via ajax"""
+        response = self.client.get(
+            reverse('requests_page') + '?sort_datetime=last',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        objects = loads(response.content)['webrequests']
+
+        self.assertEqual(len(objects), 10)
+        self.assertGreater(
+            datetime.strptime(objects[0]['datetime'], '%d/%b/%Y %H:%M:%S'),
+            datetime.strptime(objects[-1]['datetime'], '%d/%b/%Y %H:%M:%S')
+        )
+
+    def test_10_requests_sorting_by_oldest_datetime_ajax_request(self):
+        """View returns web requests from oldest one. Request via ajax"""
+        response = self.client.get(
+            reverse('requests_page') + '?sort_datetime=first',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        objects = loads(response.content)['webrequests']
+        self.assertGreater(
+            datetime.strptime(objects[-1]['datetime'], '%d/%b/%Y %H:%M:%S'),
+            datetime.strptime(objects[0]['datetime'], '%d/%b/%Y %H:%M:%S')
+        )
+
+    def test_10_requests_sorting_by_decreasing_priority_ajax_request(self):
+        """View returns requests with priority from highest to lowest.
+        Request via ajax"""
+        Request.update_priority(1, 2)
+
+        response = self.client.get(
+            reverse('requests_page') + '?sort_priority=high',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        objects = loads(response.content)['webrequests']
+
+        self.assertGreater(objects[0]['priority'], objects[-1]['priority'])
+
+    def test_10_last_requests_sorting_by_ascending_priority_ajax_request(self):
+        """View returns requests with priority from lowest to highest.
+        Request via ajax"""
+        Request.update_priority(1, 2)
+
+        response = self.client.get(
+            reverse('requests_page') + '?sort_priority=low',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        objects = loads(response.content)['webrequests']
+
+        self.assertGreater(objects[-1]['priority'], objects[0]['priority'])
 
 
 class TestProfileUpdateView(TestCase):
