@@ -144,6 +144,7 @@ class TestRequest(TestCase):
     def test_update_priority_method(self):
         """Model updates the priority of the "request" with given id"""
         new_priority = 10
+        RequestFactory.create(status_code=200)
         rq = Request.objects.last()
         Request.update_priority(rq.id, new_priority)
         self.assertEqual(Request.objects.get(pk=rq.id).priority, new_priority)

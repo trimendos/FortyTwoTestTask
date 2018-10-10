@@ -16,6 +16,10 @@ class Profile(models.Model):
     photo = models.ImageField(
         upload_to='photos', null=True, blank=True, verbose_name=u'Photo')
 
+    def __unicode__(self):
+        return u'{last_name} {first_name}'.format(first_name=self.first_name,
+                                                  last_name=self.last_name)
+
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
         size = (200, 200)
@@ -24,10 +28,6 @@ class Profile(models.Model):
             image = Image.open(filename)
             image.thumbnail(size, Image.ANTIALIAS)
             image.save(filename)
-
-    def __unicode__(self):
-        return u'{last_name} {first_name}'.format(first_name=self.first_name,
-                                                  last_name=self.last_name)
 
 
 class Request(models.Model):
@@ -49,6 +49,13 @@ class Request(models.Model):
     def get_unviewed_count():
         """Returns count of unviewed requests"""
         return Request.objects.filter(viewed=False).count()
+
+    @staticmethod
+    def update_priority(id, priority):
+        """Updates given item with new priority"""
+        rq = Request.objects.get(pk=id)
+        rq.priority = priority
+        rq.save()
 
 
 class CRUDLog(models.Model):
