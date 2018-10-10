@@ -82,4 +82,5 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 class PriorityChangeForm(forms.Form):
-    pass
+    rq_id = forms.IntegerField(min_value=1)
+    priority = forms.IntegerField(max_value=999, min_value=0)
