@@ -140,3 +140,10 @@ class TestRequest(TestCase):
         for _ in range(7):
             RequestFactory.create(status_code=200)
         self.assertEqual(Request.get_unviewed_count(), 7)
+
+    def test_update_priority_method(self):
+        """Model updates the priority of the "request" with given id"""
+        new_priority = 10
+        rq = Request.objects.last()
+        Request.update_priority(rq.id, new_priority)
+        self.assertEqual(Request.objects.get(pk=rq.id).priority, new_priority)
