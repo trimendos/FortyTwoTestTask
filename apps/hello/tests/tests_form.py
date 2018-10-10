@@ -4,7 +4,7 @@ from factory import fuzzy, DjangoModelFactory, LazyAttribute, Faker
 from django.test import TestCase
 
 from ..models import Profile
-from ..forms import ProfileUpdateForm
+from ..forms import ProfileUpdateForm, PriorityChangeForm
 from ..utils import years_ago
 
 
@@ -72,3 +72,48 @@ class ProfileUpdateFormTest(TestCase):
             self.form(data=normal).is_valid(),
             "The date is incorrect"
         )
+
+
+class PriorityChangeFormTest(TestCase):
+
+    def test_valid_form(self):
+        """Valid case"""
+        form = PriorityChangeForm(data={
+            'rq_id': 1,
+            'priority': 1
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_non_valid_form_priority_is_negative(self):
+        """Non valid case, priority can't be a negative number"""
+        form = PriorityChangeForm(data={
+            'rq_id': 1,
+            'priority': -1
+        })
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors['priority'],
+            ['Ensure this value is greater than or equal to 0.']
+        )
+
+    def test_non_valid_form_priority_is_too_high(self):
+        """Non valid case, priority is highest then 999"""
+        form = PriorityChangeForm(data={
+            'rq_id': 1,
+            'priority': 1000
+        })
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors['priority'],
+            ['Ensure this value is less than or equal to 999.']
+        )
+
+    def test_empty_fields(self):
+        """All fields is required"""
+        form = PriorityChangeForm(data={})
+        err_msg = ['This field is required.']
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['rq_id'], err_msg)
+        self.assertEqual(form.errors['priority'], err_msg)

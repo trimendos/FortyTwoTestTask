@@ -79,3 +79,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Profile
+
+
+class PriorityChangeForm(forms.Form):
+    pass
