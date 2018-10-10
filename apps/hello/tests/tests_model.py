@@ -131,7 +131,8 @@ class TestRequest(TestCase):
             'url': u'CharField',
             'status_code': u'IntegerField',
             'method': u'CharField',
-            'viewed': u'BooleanField'
+            'viewed': u'BooleanField',
+            'priority': u'IntegerField'
         })
 
     def test_get_unviewed_count(self):

@@ -218,7 +218,6 @@ app.Requests = function() {
 
     function toggleSort() {
         options.sortPriorityBtn.click(function () {
-            console.log(store);
             var self = $(this),
                 arrow = self.find("i"),
                 currClass = arrow.attr("class"),
