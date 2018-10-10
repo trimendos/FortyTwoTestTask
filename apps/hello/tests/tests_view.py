@@ -135,6 +135,37 @@ class RequestsPageViewTest(TestCase):
         )
         self.assertFalse(all(r.viewed for r in Request.objects.all()))
 
+    def test_change_priority_async_valid_data(self):
+        """Changing priority invoke updating record with given "id"."""
+        new_priority = 10
+        rq = Request.objects.last()
+        response = self.client.post(
+            reverse('requests_page'),
+            data={
+                'rq_id': rq.id,
+                'priority': new_priority,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        webrequests = loads(response.content)['webrequests']
+        rq_list = Request.objects.all().order_by('priority')
+        self.assertEqual(webrequests[0]['id'], rq_list.first().id)
+
+    def test_change_priority_async_non_valid(self):
+        """Should return error dict"""
+        new_priority = -10
+        rq = Request.objects.last()
+        response = self.client.post(
+            reverse('requests_page'),
+            data={
+                'id': rq.id,
+                'priority': new_priority,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        content = loads(response.content)
+        self.assertTrue(content.get('errors', False))
+
 
 class TestProfileUpdateView(TestCase):
 
@@ -147,7 +178,7 @@ class TestProfileUpdateView(TestCase):
         self.request.user = self.user
         self.response = ProfileUpdatePageView.as_view()(
             self.request, pk=self.pk)
-        self.kwargs = {'HTTP_X_REQUESTED_WITH': "XMLHttpRequest"}
+        self.kwargs = {'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'}
         self.credentials = {'username': 'admin',
                             'password': 'admin'}
 
