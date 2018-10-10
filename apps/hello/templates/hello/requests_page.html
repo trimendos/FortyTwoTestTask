@@ -21,6 +21,7 @@ Requests
                         <th scope="col">URL</th>
                         <th scope="col">STATUS CODE</th>
                         <th scope="col">DATE & TIME</th>
+                        <th scope="col">PRIORITY <i class="fas fa-sort-amount-down"></i></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,6 +31,9 @@ Requests
                             <td>{{ obj.url }}</td>
                             <td>{{ obj.status_code }}</td>
                             <td>{{ obj.datetime|date:"d/M/Y H:i:s" }}</td>
+                            <td data-id="{{ obj.id }}">
+                                <button class="btn btn-light priority"> 0 </button>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

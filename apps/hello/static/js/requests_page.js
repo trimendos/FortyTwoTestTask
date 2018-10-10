@@ -4,7 +4,7 @@ app.Requests = function() {
     let options, store;
 
     options = {
-        row_tpl: "<tr><td>{method}</td><td>{url}</td><td>{status_code}</td><td>{datetime}</td></tr>",
+        row_tpl: "<tr><td>{method}</td><td>{url}</td><td>{status_code}</td><td>{datetime}</td><td data-id='{id}'><button class='btn btn-light priority'>{priority}</button></td></tr>",
         title_msg: "Requests",
 
         updateInterval: 1000,
@@ -65,10 +65,12 @@ app.Requests = function() {
         webrequests.forEach(function (webrequest) {
 
             html += makeTemplate({
+                "id": webrequest.id,
                 "datetime": webrequest.datetime,
                 "url": webrequest.url,
                 "status_code": webrequest.status_code,
-                "method": webrequest.method
+                "method": webrequest.method,
+                "priority": 0
             });
         });
         // Update table

@@ -17,3 +17,7 @@ body {
 .disable-links {
     pointer-events: none;
 }
+
+input[type=number] {
+    width: 55px;
+}
