@@ -183,6 +183,18 @@ class RequestsPageViewTest(TestCase):
 
         self.assertGreater(objects[-1]['priority'], objects[0]['priority'])
 
+    def test_if_window_in_focus_requests_viewed(self):
+        """Requests shoud be considered as read when page is viewed by user """
+        RequestModelFactory.create(status_code=200)
+        unviewed_before = Request.get_unviewed_count()
+        self.assertGreater(unviewed_before, 0)
+        self.client.get(
+            reverse('requests_page') + '?infocus=true',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+        unviewed_after = Request.get_unviewed_count()
+        self.assertEqual(unviewed_after, 0)
+
 
 class TestProfileUpdateView(TestCase):
 
