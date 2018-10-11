@@ -38,6 +38,9 @@ class RequestsPageView(ListView, FormView):
 
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
+            if request.GET.get('infocus') == 'true':
+                Request.objects.filter(viewed=False).update(viewed=True)
+
             unviewed = self.model.get_unviewed_count()
             response = {'unviewed': unviewed}
             is_force_update = request.GET.get('force_update', 'false')
