@@ -95,16 +95,16 @@ app.Requests = function() {
                     "priority": webrequest.priority
                 });
             });
+            // Update table
+            insertRows(html);
+
+            // Bind buttons
+            priorityBtnHandler();
+
+            // Update counter
+            updateTitleOfPage();
+
         }
-
-        // Update table
-        insertRows(html);
-
-        // Bind buttons
-        priorityBtnHandler();
-
-        // Update counter
-        updateTitleOfPage();
 
     }
 
@@ -137,7 +137,6 @@ app.Requests = function() {
         input = $("input#id_priority")
             .focus()
             .blur(function (){
-                input.tooltip("destroy");
                 input.remove();
                 btn.show();
             });
@@ -150,7 +149,7 @@ app.Requests = function() {
 
         data = {
             priority: input.val(),
-            re_id: parent.attr("data-id")
+            rq_id: parent.attr("data-id")
         };
 
         $.ajax({
@@ -172,16 +171,12 @@ app.Requests = function() {
                         }
                     }
 
-                    input.tooltip({title: errors});
-                    input.tooltip("show");
-
                 } else {
                     handleResponse(response);
                 }
             },
             error: function (x, s, m) {
-                input.tooltip({title: "Error! Message: " + m});
-                input.tooltip("show");
+                console.log("Error! Message: " + m)
             }
         });
     }

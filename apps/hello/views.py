@@ -24,17 +24,26 @@ class RequestsPageView(ListView, FormView):
     model = Request
     form_class = PriorityChangeForm
 
-    def get_queryset(self):
-        return self.model.objects.order_by('-priority').values()[:10]
+    def get_queryset(self, request=None):
+        if request is None:
+            request = self.request
+        by_datetime = request.GET.get('sort_datetime')
+        if by_datetime is not None:
+            by_datetime = 'datetime' if by_datetime == 'first' else '-datetime'
+            return Request.objects.order_by(by_datetime).values()[:10]
+
+        by_priority = request.GET.get('sort_priority')
+        by_priority = 'priority' if by_priority == 'low' else '-priority'
+        return Request.objects.order_by(by_priority).values()[:10]
 
     def get(self, request, *args, **kwargs):
-        raw_requests = Request.objects.values().order_by("-priority")[:10]
         if request.is_ajax():
             unviewed = self.model.get_unviewed_count()
             response = {'unviewed': unviewed}
+            is_force_update = request.GET.get('force_update', 'false')
 
-            if unviewed:
-                response['webrequests'] = list(raw_requests)
+            if unviewed or is_force_update == 'true':
+                response['webrequests'] = list(self.get_queryset(request))
 
             return json_response(response)
 
@@ -45,7 +54,6 @@ class RequestsPageView(ListView, FormView):
 
     def form_valid(self, form):
         cd = form.cleaned_data
-
         Request.update_priority(
             id=cd['rq_id'], priority=cd['priority']
         )
